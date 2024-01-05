@@ -3,26 +3,32 @@
 
 #include <iostream>
 #include <string>
+#include <fstream>
 
-void myGrep(char* argv);
+void myGrep(char* word, char* filename);
 
 int main(int argc, char* argv[])
 {
-	if (argc == 2)
-		myGrep(argv[1]);
+	if (argc >= 2)
+		myGrep(argv[1], argv[2]);
 	else
 		std::cout << "Unfortunately, the program couldn't recognize data" << std::endl;
 	system("pause");
 	return 0;
 }
 
-void myGrep(char* argv)
+void myGrep(char* word, char* filename)
 {
-	std::string text;
-	std::cout << "Please enter text, where " << argv << " has to be found:" << std::endl;
-	std::getline(std::cin, text);
-	if (text.find(argv) == std::string::npos)
+	std::ifstream file(filename);
+	if (!file.is_open())
+	{
+		std::cout << "Could not open the file." << std::endl;
+		return;
+	}
+	std::string line;
+	std::getline(file, line);
+	if (line.find(word) == std::string::npos)
 		std::cout << "Not found" << std::endl;
 	else
-		std::cout << text << std::endl;
+		std::cout << line << std::endl;
 }
